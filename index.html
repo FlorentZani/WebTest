@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebView Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f5f5f5;
+    }
+    .container {
+      text-align: center;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      font-size: 24px;
+      color: #333;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      background-color: #4CAF50;
+      color: white;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #returnBtn {
+      background-color: #f44336;
+    }
+    #returnBtn:hover {
+      background-color: #d32f2f;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    function App() {
+      const sendPrintMessage = () => {
+        const invoiceData = {
+          action: 'print',
+          data: {
+            invoiceType: 'Fature Shitje',
+            header: 'Test Invoice',
+            invNumber: 999,
+            tin: '123456789',
+            address: '123 Test St',
+            fiscString: 'TEST_FISCAL',
+            opCode: 'TEST01',
+            buCode: 'TESTBU',
+            Date: '2025-04-28',
+            lines: [
+              {
+                productName: 'Test Product',
+                quantity: 1,
+                price: 10.0,
+                fullPrice: 10.0,
+                discountAmount: 0,
+                uom: 'Unit',
+              },
+            ],
+            totalPriceNoVat: 10.0,
+            vat: [{ vatType: 'Standard', amount: 2.0 }],
+            totalDiscount: 0,
+            totalPrice: 12.0,
+            Exrate: 1,
+            CustomerName: 'Test Customer',
+            CustomerTin: '987654321',
+            CustomerContact: '555-9999',
+            CustomerAddress: '456 Test Ave',
+            qrCode: 'https://example.com/test-invoice',
+            qrSize: 8,
+            IIC: 'TESTIIC',
+            FIC: 'TESTFIC',
+            Footer: 'Thank you for testing!',
+            printerWidth: 48,
+          },
+        };
+        console.log('Sending print message:', invoiceData);
+        window.ReactNativeWebView.postMessage(JSON.stringify(invoiceData));
+      };
+
+      const sendReturnMessage = () => {
+        const returnData = { action: 'returnToApp' };
+        console.log('Sending return message:', returnData);
+        window.ReactNativeWebView.postMessage(JSON.stringify(returnData));
+      };
+
+      return (
+        <div className="container">
+          <h1>WebView Test Page</h1>
+          <button onClick={sendPrintMessage}>Print Test Invoice</button>
+          <button id="returnBtn" onClick={sendReturnMessage}>Return to App</button>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
